@@ -1,7 +1,16 @@
 defmodule Mix.Tasks.Tane do
-  use Mix.Task
+  @moduledoc """
+  This task executes seeding.
 
-  @shortdoc "seed!!"
+  ## Options
+
+    * `--path` - path to directory that contains seed exs files.
+      defaults to `priv/repo/seeds`
+  """
+
+  @shortdoc "insert seeds"
+
+  use Mix.Task
 
   @default_path Path.join(~w[priv repo seeds])
 
