@@ -32,8 +32,9 @@ defmodule Tane do
 
   @spec seed(t, Keyword.t) :: t
   def seed(tane = %__MODULE__{repo: repo_module, model: model_module}, row) do
-    model = struct(model_module, row)
-    apply(repo_module, :insert!, [model])
+    model = struct(model_module, [])
+    changeset = apply(model_module, :changeset, [model, row])
+    apply(repo_module, :insert!, [changeset])
 
     tane
   end
