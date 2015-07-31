@@ -31,6 +31,10 @@ defmodule Tane do
   end
 
   @spec delete_all!(t) :: t | no_return
+  @doc """
+  Delete all entries stored in the repository.
+  Internally invokes `repo.delete_all(model)`.
+  """
   def delete_all!(%__MODULE__{repo: nil}) do
     raise ArgumentError, "repo is required to delete all entries"
   end
