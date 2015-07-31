@@ -46,9 +46,9 @@ defmodule TaneTest do
       |> Tane.model(MyApp.User)
 
     # It is bother to setup ecto for only testing.
-    # I think it's enough to verify `MyApp.Repo.insert!/1` is called.
+    # Just verify `MyApp.User.changeset/1` is called.
 
-    message_regexp = ~r(undefined function: MyApp\.Repo\.insert\!/1)
+    message_regexp = ~r(undefined function: MyApp\.User\.changeset/2)
     assert_raise UndefinedFunctionError, message_regexp, fn ->
       tane |> Tane.seed(name: "bob")
     end
