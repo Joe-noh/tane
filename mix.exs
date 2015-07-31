@@ -43,6 +43,8 @@ defmodule Tane.Mixfile do
 
   defp deps do
     [
+      {:meck, "~> 0.8"},
+
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc,  "~> 0.7", only: :dev}
     ]
