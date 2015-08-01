@@ -43,8 +43,9 @@ defmodule Tane do
     raise ArgumentError, "model is required to delete all entries"
   end
 
-  def delete_all!(%__MODULE__{repo: repo, model: model}) do
+  def delete_all!(tane = %__MODULE__{repo: repo, model: model}) do
     apply(repo, :delete_all, [model])
+    tane
   end
 
   @spec seed(t, map | Keyword.t) :: t

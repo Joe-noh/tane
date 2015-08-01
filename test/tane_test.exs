@@ -1,20 +1,40 @@
 defmodule TaneTest do
   use ExUnit.Case
 
+  setup_all do
+    :meck.new(Repo, [:non_strict, :non_link])
+    :meck.new(User, [:non_strict, :non_link])
+
+    :meck.expect(Repo, :insert!,    1, %{model: User})
+    :meck.expect(Repo, :insert!,    2, %{model: User})
+    :meck.expect(Repo, :delete_all, 1, {1, nil})
+    :meck.expect(Repo, :delete_all, 2, {2, nil})
+
+    :meck.expect(User, :__struct__, 0, %{struct: User})
+    :meck.expect(User, :changeset,  2, %{struct: Ecto.Changeset})
+  end
+
+  setup do
+    on_exit fn ->
+      :meck.reset(Repo)
+      :meck.reset(User)
+    end
+  end
+
   test "init" do
     assert Tane.init == %Tane{}
   end
 
   test "repo" do
-    assert Tane.init |> Tane.repo(MyApp.Repo) == %Tane{repo: MyApp.Repo}
+    assert Tane.init |> Tane.repo(Repo) == %Tane{repo: Repo}
   end
 
   test "model" do
-    assert Tane.init |> Tane.model(MyApp.User) == %Tane{model: MyApp.User}
+    assert Tane.init |> Tane.model(User) == %Tane{model: User}
   end
 
   test "delete_all! raises when repo is not provided" do
-    tane = Tane.init |> Tane.model(MyApp.User)
+    tane = Tane.init |> Tane.model(User)
 
     assert_raise ArgumentError, ~r/repo is required/, fn ->
       tane |> Tane.delete_all!
@@ -22,35 +42,28 @@ defmodule TaneTest do
   end
 
   test "delete_all! raises when model is not provided" do
-    tane = Tane.init |> Tane.repo(MyApp.Repo)
+    tane = Tane.init |> Tane.repo(Repo)
 
     assert_raise ArgumentError, ~r/model is required/, fn ->
       tane |> Tane.delete_all!
     end
   end
 
-  test "delete_all invokes repo.delete_all" do
+  test "delete_all returns " do
     tane = Tane.init
-      |> Tane.repo(MyApp.Repo)
-      |> Tane.model(MyApp.User)
+      |> Tane.repo(Repo)
+      |> Tane.model(User)
 
-    message_regexp = ~r(undefined function: MyApp\.Repo\.delete_all/1)
-    assert_raise UndefinedFunctionError, message_regexp, fn ->
-      tane |> Tane.delete_all!
-    end
+    assert Tane.delete_all!(tane) == tane
+    assert :meck.num_calls(Repo, :delete_all, 1) == 1
   end
 
   test "integration" do
     tane = Tane.init
-      |> Tane.repo(MyApp.Repo)
-      |> Tane.model(MyApp.User)
+      |> Tane.repo(Repo)
+      |> Tane.model(User)
 
-    # It is bother to setup ecto for only testing.
-    # Just verify `MyApp.User.changeset/1` is called.
-
-    message_regexp = ~r(undefined function: MyApp\.User\.changeset/2)
-    assert_raise UndefinedFunctionError, message_regexp, fn ->
-      tane |> Tane.seed(name: "bob")
-    end
+    assert Tane.seed(tane, name: "bob") == tane
+    assert :meck.num_calls(Repo, :insert!, 1) == 1
   end
 end
