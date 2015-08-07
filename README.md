@@ -7,8 +7,7 @@ Tane means seeds.
 
 import Tane
 
-init
-|> repo(MyApp.Repo)
+repo(MyApp.Repo)
 |> model(MyApp.User)
 |> seed(name: "Bob",  email: "bob@black.com")
 |> seed(name: "Mary", email: "mary@blue.com")
@@ -29,8 +28,7 @@ $ mix tane --path priv/another_repo/seeds
 If you want to delete all data before seeding, `delete_all!/1` is useful.
 
 ```elixir
-init
-|> repo(MyApp.Repo)
+repo(MyApp.Repo)
 |> model(MyApp.User)  # have to register these two before delete_all!.
 |> delete_all!
 |> seed(name: "Bob",  email: "bob@black.com")
