@@ -27,10 +27,12 @@ defmodule TaneTest do
   end
 
   test "repo" do
+    assert Tane.repo(Repo) == %Tane{repo: Repo}
     assert Tane.init |> Tane.repo(Repo) == %Tane{repo: Repo}
   end
 
   test "model" do
+    assert Tane.model(User) == %Tane{model: User}
     assert Tane.init |> Tane.model(User) == %Tane{model: User}
   end
 
