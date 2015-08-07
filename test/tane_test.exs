@@ -23,6 +23,7 @@ defmodule TaneTest do
 
   test "init" do
     assert Tane.init == %Tane{}
+    assert Tane.init(Repo, User) == %Tane{repo: Repo, model: User}
   end
 
   test "repo" do

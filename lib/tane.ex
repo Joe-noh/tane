@@ -20,6 +20,11 @@ defmodule Tane do
     %__MODULE__{}
   end
 
+  @spec init(atom, atom) :: t
+  def init(repo, model) do
+    %__MODULE__{repo: repo, model: model}
+  end
+
   @spec repo(t, atom) :: t
   def repo(tane, repo_module) do
     %__MODULE__{tane | repo: repo_module}
