@@ -4,8 +4,7 @@ defmodule Tane do
 
       import Tane
 
-      init
-      |> repo(MyApp.Repo)
+      repo(MyApp.Repo)
       |> model(MyApp.User)
       |> seed(name: "Bob",  email: "bob@black.com")
       |> seed(name: "Mary", email: "mary@blue.com")
@@ -14,16 +13,6 @@ defmodule Tane do
   @type t :: %__MODULE__{}
 
   defstruct [:repo, :model]
-
-  @spec init() :: t
-  def init do
-    %__MODULE__{}
-  end
-
-  @spec init(atom, atom) :: t
-  def init(repo, model) do
-    %__MODULE__{repo: repo, model: model}
-  end
 
   @spec repo(atom) :: t
   def repo(repo_module) do

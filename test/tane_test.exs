@@ -21,23 +21,16 @@ defmodule TaneTest do
     end
   end
 
-  test "init" do
-    assert Tane.init == %Tane{}
-    assert Tane.init(Repo, User) == %Tane{repo: Repo, model: User}
-  end
-
   test "repo" do
     assert Tane.repo(Repo) == %Tane{repo: Repo}
-    assert Tane.init |> Tane.repo(Repo) == %Tane{repo: Repo}
   end
 
   test "model" do
     assert Tane.model(User) == %Tane{model: User}
-    assert Tane.init |> Tane.model(User) == %Tane{model: User}
   end
 
   test "delete_all! raises when repo is not provided" do
-    tane = Tane.init |> Tane.model(User)
+    tane = Tane.model(User)
 
     assert_raise ArgumentError, ~r/repo is required/, fn ->
       tane |> Tane.delete_all!
@@ -45,7 +38,7 @@ defmodule TaneTest do
   end
 
   test "delete_all! raises when model is not provided" do
-    tane = Tane.init |> Tane.repo(Repo)
+    tane = Tane.repo(Repo)
 
     assert_raise ArgumentError, ~r/model is required/, fn ->
       tane |> Tane.delete_all!
@@ -53,18 +46,14 @@ defmodule TaneTest do
   end
 
   test "delete_all returns " do
-    tane = Tane.init
-      |> Tane.repo(Repo)
-      |> Tane.model(User)
+    tane = Tane.repo(Repo) |> Tane.model(User)
 
     assert Tane.delete_all!(tane) == tane
     assert :meck.num_calls(Repo, :delete_all, 1) == 1
   end
 
   test "integration" do
-    tane = Tane.init
-      |> Tane.repo(Repo)
-      |> Tane.model(User)
+    tane = Tane.repo(Repo) |> Tane.model(User)
 
     assert Tane.seed(tane, name: "bob") == tane
     assert :meck.num_calls(Repo, :insert!, 1) == 1
