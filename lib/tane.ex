@@ -2,7 +2,7 @@ defmodule Tane do
   @moduledoc """
   This module provides some functions to insert seeds.
 
-      import Tane
+      use Tane
 
       repo(MyApp.Repo)
       |> model(MyApp.User)

@@ -3,9 +3,9 @@
 Tane means seeds.
 
 ```elixir
-# priv/repo/seeds/user.exs
+# priv/repo/seeds.exs
 
-import Tane
+use Tane
 
 repo(MyApp.Repo)
 |> model(MyApp.User)
@@ -22,7 +22,7 @@ $ mix tane
 You can specify the path.
 
 ```
-$ mix tane --path priv/another_repo/seeds
+$ mix tane --path priv/another_repo/seeds.exs
 ```
 
 If you want to delete all data before seeding, `delete_all!/1` is useful.
@@ -31,5 +31,22 @@ If you want to delete all data before seeding, `delete_all!/1` is useful.
 repo(MyApp.Repo)
 |> model(MyApp.User)  # have to register these two before delete_all!.
 |> delete_all!
-|> seed(name: "Bob",  email: "bob@black.com")
+|> seed(name: "Bob", email: "bob@black.com")
+```
+
+Use `get_by/2` to get saved models.
+
+```elixir
+use Tane
+
+alias MyApp.User
+alias MyApp.Post
+alias MyApp.Repo
+
+repo(Repo)
+|> model(User)
+|> seed(name: "bob")
+|> seed(name: "mary")
+|> model(Post)
+|> seed(title: "Hello", body: "I'm bob", user_id: get_by(User, name: "bob").id)
 ```
