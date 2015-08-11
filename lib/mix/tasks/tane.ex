@@ -20,6 +20,8 @@ defmodule Mix.Tasks.Tane do
     path = Keyword.get(opts, :path, @default_path)
 
     Mix.Task.run("app.start", [])
+    Tane.StoreServer.start_link
+
     seed(path)
   end
 
