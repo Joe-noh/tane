@@ -1,6 +1,8 @@
 defmodule TaneTest do
   use ExUnit.Case
 
+  import Tane.DSL
+
   setup_all do
     :meck.new(Repo, [:non_strict, :non_link])
     :meck.new(User, [:non_strict, :non_link])
@@ -22,40 +24,40 @@ defmodule TaneTest do
   end
 
   test "repo" do
-    assert Tane.repo(Repo) == %Tane{repo: Repo}
+    assert repo(Repo) == %Tane{repo: Repo}
   end
 
   test "model" do
-    assert Tane.model(User) == %Tane{model: User}
+    assert model(User) == %Tane{model: User}
   end
 
   test "delete_all! raises when repo is not provided" do
-    tane = Tane.model(User)
+    tane = model(User)
 
     assert_raise ArgumentError, ~r/repo is required/, fn ->
-      tane |> Tane.delete_all!
+      tane |> delete_all!
     end
   end
 
   test "delete_all! raises when model is not provided" do
-    tane = Tane.repo(Repo)
+    tane = repo(Repo)
 
     assert_raise ArgumentError, ~r/model is required/, fn ->
-      tane |> Tane.delete_all!
+      tane |> delete_all!
     end
   end
 
   test "delete_all returns " do
-    tane = Tane.repo(Repo) |> Tane.model(User)
+    tane = repo(Repo) |> model(User)
 
-    assert Tane.delete_all!(tane) == tane
+    assert delete_all!(tane) == tane
     assert :meck.num_calls(Repo, :delete_all, 1) == 1
   end
 
   test "integration" do
-    tane = Tane.repo(Repo) |> Tane.model(User)
+    tane = repo(Repo) |> model(User)
 
-    assert Tane.seed(tane, name: "bob") == tane
+    assert seed(tane, name: "bob") == tane
     assert :meck.num_calls(Repo, :insert!, 1) == 1
   end
 end

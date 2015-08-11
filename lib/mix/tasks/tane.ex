@@ -4,15 +4,14 @@ defmodule Mix.Tasks.Tane do
 
   ## Options
 
-    * `--path` - path to directory that contains seed exs files.
-      defaults to `priv/repo/seeds`
+    * `--path` - path to the seed exs files. defaults to `priv/repo/seeds.exs`
   """
 
   @shortdoc "insert seeds"
 
   use Mix.Task
 
-  @default_path Path.join(~w[priv repo seeds])
+  @default_path Path.join(~w[priv repo seeds.exs])
 
   def run(args) do
     {opts, _argv, _errors} = OptionParser.parse(args)
@@ -20,13 +19,8 @@ defmodule Mix.Tasks.Tane do
     path = Keyword.get(opts, :path, @default_path)
 
     Mix.Task.run("app.start", [])
-    seed(path)
-  end
+    Tane.StoreServer.start_link
 
-  defp seed(path) do
-    [path, "*.exs"]
-    |> Path.join
-    |> Path.wildcard
-    |> Enum.each(&Code.eval_file/1)
+    Code.eval_file(path)
   end
 end
