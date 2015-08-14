@@ -1,5 +1,6 @@
 ExUnit.start()
 
-defmodule TestModel do
-  defstruct [:name, :email]
-end
+Tane.Repo.start_link()
+
+Mix.Task.run "ecto.create",  ["--quiet"]
+Mix.Task.run "ecto.migrate", ["--quiet"]
