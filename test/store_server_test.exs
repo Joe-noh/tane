@@ -2,6 +2,7 @@ defmodule Tane.StoreServerTest do
   use ExUnit.Case
 
   alias Tane.StoreServer
+  alias Tane.User
 
   setup do
     StoreServer.start_link
@@ -9,26 +10,26 @@ defmodule Tane.StoreServerTest do
   end
 
   test "store an object" do
-    bob = %TestModel{name: "bob", email: "bob@example.com"}
+    bob = %User{name: "bob", email: "bob@example.com"}
     StoreServer.store(bob)
 
-    assert StoreServer.dump |> Dict.get(TestModel) == [bob]
+    assert StoreServer.dump |> Dict.get(User) == [bob]
   end
 
   test "get_by" do
-    bob = %TestModel{name: "bob", email: "bob@example.com"}
+    bob = %User{name: "bob", email: "bob@example.com"}
     StoreServer.store(bob)
 
-    assert StoreServer.get_by(TestModel, name: "bob") == bob
+    assert StoreServer.get_by(User, name: "bob") == bob
   end
 
   test "get_by returns first inserted one" do
-    bob1 = %TestModel{name: "bob", email: "bob1@example.com"}
-    bob2 = %TestModel{name: "bob", email: "bob2@example.com"}
+    bob1 = %User{name: "bob", email: "bob1@example.com"}
+    bob2 = %User{name: "bob", email: "bob2@example.com"}
 
     StoreServer.store(bob1)
     StoreServer.store(bob2)
 
-    assert StoreServer.get_by(TestModel, name: "bob") == bob1
+    assert StoreServer.get_by(User, name: "bob") == bob1
   end
 end
