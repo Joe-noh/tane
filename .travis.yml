@@ -3,3 +3,5 @@ elixir:
   - 1.0.5
 otp_release:
   - 18.0
+notifications:
+  email: false
