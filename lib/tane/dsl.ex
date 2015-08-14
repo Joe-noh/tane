@@ -24,15 +24,15 @@ defmodule Tane.DSL do
 
   @spec delete_all!(Tane.t) :: Tane.t | no_return
   @doc """
-  Delete all entries stored in Tane.the repository.
+  Delete all entries stored in the repository.
   Internally invokes `repo.delete_all(model)`.
   """
   def delete_all!(%Tane{repo: nil}) do
-    raise ArgumentError, "repo is required Tane.to delete all entries"
+    raise ArgumentError, "repo is required to delete all entries"
   end
 
   def delete_all!(%Tane{model: nil}) do
-    raise ArgumentError, "model is required Tane.to delete all entries"
+    raise ArgumentError, "model is required to delete all entries"
   end
 
   def delete_all!(tane = %Tane{repo: repo, model: model}) do
