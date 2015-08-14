@@ -1,5 +1,7 @@
 # Tane
 
+[![Build Status](https://travis-ci.org/Joe-noh/tane.svg?branch=master)](https://travis-ci.org/Joe-noh/tane)
+
 Tane means seeds.
 
 ```elixir
