@@ -6,6 +6,7 @@ defmodule Tane.IntegrationTest do
   alias Tane.Post
 
   import Ecto.Query, only: [from: 2]
+  import TestHelper
 
   setup do
     Repo.delete_all(Post)
@@ -43,9 +44,11 @@ defmodule Tane.IntegrationTest do
     assert Enum.count(Repo.all Post) == 2
 
     john  = Repo.one(from u in User, where: u.name == "john", preload: :posts)
-    posts = Repo.all(Post)
+    posts = Repo.all(from p in Post, join: u in assoc(p, :user), preload: [user: u])
 
-    assert john.posts -- posts == []
-    assert posts -- john.posts == []
+    assert titles(john.posts) -- titles(posts) == []
+    assert titles(posts) -- titles(john.posts) == []
+
+    assert Repo.preload(hd(posts), :user).user.id == john.id
   end
 end
