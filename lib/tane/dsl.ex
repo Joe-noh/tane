@@ -40,20 +40,9 @@ defmodule Tane.DSL do
     tane
   end
 
-  @spec seed(Tane.t, map | Keyword.t) :: Tane.t
-  def seed(tane, row) when is_map(row) do
-    do_seed(tane, row)
-  end
-
-  def seed(tane, row) do
-    do_seed(tane, Enum.into(row, %{}))
-  end
-
-  @spec do_seed(Tane.t, map) :: Tane.t
-  defp do_seed(tane = %Tane{repo: repo_module, model: model_module}, row) do
-    row = row |> Enum.into %{}
-
-    model = struct(model_module, [])
+  @spec seed(Tane.t, Keyword.t) :: Tane.t
+  def seed(tane = %Tane{repo: repo_module, model: model_module}, row) do
+    model = struct(model_module, row)
     inserted = apply(repo_module, :insert!, [model])
 
     Tane.StoreServer.store(inserted)
