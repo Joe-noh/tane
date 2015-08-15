@@ -26,13 +26,13 @@ defmodule Tane.IntegrationTest do
     repo(Repo)
     |> model(User)
     |> delete_all!
-    |> seed(name: "john", email: "john@example.com")
+    |> seed(:john, name: "john", email: "john@example.com")
     |> seed(name: "mary", email: "mary@example.com")
     |> seed(name: "alex", email: "alex@example.com")
     |> model(Post)
     |> delete_all!
-    |> seed(title: "hello", user_id: get_by(User, name: "john").id)
-    |> seed(title: "world", user_id: get_by(User, name: "john").id)
+    |> seed(title: "hello", user_id: registered(:john).id)
+    |> seed(title: "world", user_id: registered(:john).id)
     """
     path = Path.join(System.tmp_dir, "integration.exs")
 
