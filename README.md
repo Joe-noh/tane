@@ -36,7 +36,7 @@ repo(MyApp.Repo)
 |> seed(name: "Bob", email: "bob@black.com")
 ```
 
-Use `get_by/2` to get saved models.
+Use `registered/1` to get saved models.
 
 ```elixir
 use Tane
@@ -47,8 +47,8 @@ alias MyApp.Repo
 
 repo(Repo)
 |> model(User)
-|> seed(name: "bob")
+|> seed(:bob, name: "bob")
 |> seed(name: "mary")
 |> model(Post)
-|> seed(title: "Hello", body: "I'm bob", user_id: get_by(User, name: "bob").id)
+|> seed(title: "Hello", body: "I'm bob", user_id: registered(:bob).id)
 ```
