@@ -4,7 +4,7 @@ defmodule Tane.Mixfile do
   def project do
     [
       app: :tane,
-      version: "0.3.0",
+      version: "0.3.1",
       elixir: "~> 1.0",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
@@ -55,8 +55,8 @@ defmodule Tane.Mixfile do
 
   defp deps do
     [
-      {:ecto,        "~> 0.15", only: :test},
-      {:sqlite_ecto, "~> 0.5",  only: :test},
+      {:ecto,        "~> 0.16", only: :test},
+      {:sqlite_ecto, "~> 0.6",  only: :test},
 
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc,  "~> 0.7", only: :dev}
