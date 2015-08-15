@@ -14,15 +14,6 @@ defmodule Tane.DSLTest do
     assert model(User) == %Tane{model: User}
   end
 
-  test "seed" do
-    Tane.StoreServer.start_link
-
-    tane = repo(Repo) |> model(User) |> delete_all!
-
-    assert seed(tane, name: "bob") == tane
-    assert Enum.count(Repo.all User) == 1
-  end
-
   test "delete_all! raises when repo is not provided" do
     tane = model(User)
 
@@ -37,12 +28,5 @@ defmodule Tane.DSLTest do
     assert_raise ArgumentError, ~r/model is required/, fn ->
       tane |> delete_all!
     end
-  end
-
-  test "delete_all!" do
-    tane = repo(Repo) |> model(User)
-
-    assert delete_all!(tane) == tane
-    assert Enum.count(Repo.all User) == 0
   end
 end
