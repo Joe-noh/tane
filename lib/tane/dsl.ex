@@ -54,8 +54,7 @@ defmodule Tane.DSL do
     row = row |> Enum.into %{}
 
     model = struct(model_module, [])
-    changeset = apply(model_module, :changeset, [model, row])
-    inserted = apply(repo_module, :insert!, [changeset])
+    inserted = apply(repo_module, :insert!, [model])
 
     Tane.StoreServer.store(inserted)
     tane
