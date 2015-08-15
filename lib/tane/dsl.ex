@@ -1,7 +1,5 @@
 defmodule Tane.DSL do
 
-  defdelegate get_by(module, conditions), to: Tane.StoreServer
-
   @spec repo(atom) :: Tane.t
   def repo(repo_module) do
     %Tane{repo: repo_module}
@@ -41,11 +39,27 @@ defmodule Tane.DSL do
   end
 
   @spec seed(Tane.t, Keyword.t) :: Tane.t
-  def seed(tane = %Tane{repo: repo_module, model: model_module}, row) do
-    model = struct(model_module, row)
-    inserted = apply(repo_module, :insert!, [model])
-
-    Tane.StoreServer.store(inserted)
+  def seed(tane, row) do
+    do_seed(tane, row)
     tane
+  end
+
+  @spec seed(Tane.t, atom, Keyword.t) :: Tane.t
+  def seed(tane, name, row) do
+    inserted = do_seed(tane, row)
+    Tane.StoreServer.store(name, inserted)
+
+    tane
+  end
+
+  @spec do_seed(Tane.t, Keyword.t) :: Tane.t
+  defp do_seed(%Tane{repo: repo_module, model: model_module}, row) do
+    model = struct(model_module, row)
+    apply(repo_module, :insert!, [model])
+  end
+
+  @spec registered(atom) :: term
+  def registered(name) do
+    Tane.StoreServer.registered(name)
   end
 end
