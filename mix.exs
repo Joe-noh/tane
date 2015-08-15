@@ -55,8 +55,8 @@ defmodule Tane.Mixfile do
 
   defp deps do
     [
-      {:ecto,        "~> 0.15", only: :test},
-      {:sqlite_ecto, "~> 0.5",  only: :test},
+      {:ecto,        "~> 0.16", only: :test},
+      {:sqlite_ecto, "~> 0.6",  only: :test},
 
       {:earmark, "~> 0.1", only: :dev},
       {:ex_doc,  "~> 0.7", only: :dev}
